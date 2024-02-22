@@ -1,0 +1,76 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// This is an example schema for schema.prisma
+// It contains three models: patient, med_student, and post
+// It also defines the relations between them
+
+// The patient model has the following fields:
+// - id: a unique identifier for each patient
+// - name: the name of the patient
+// - age: the age of the patient
+// - sex: the sex of the patient
+// - underlying_medical_conditions: a list of underlying medical conditions that the patient has
+// - undergoing_medications: a list of medications that the patient is taking
+// - height: the height of the patient in centimeters
+// - weight: the weight of the patient in kilograms
+// - posts: a relation field that connects the patient to the posts they have created
+model patient {
+  id                          Int      @id @default(autoincrement())
+  name                        String
+  age                         Int
+  sex                         String
+  underlying_medical_conditions String[]
+  undergoing_medications      String[]
+  height                      Float
+  weight                      Float
+  posts                       post[]
+}
+
+// The med_student model has the following fields:
+// - id: a unique identifier for each medical student
+// - uni_id: the university ID of the medical student
+// - uni_name: the name of the university that the medical student attends
+// - rating: the rating of the medical student based on their performance
+// - name: the name of the medical student
+// - age: the age of the medical student
+// - sex: the sex of the medical student
+// - replies: a relation field that connects the medical student to the posts they have replied to
+model med_student {
+  id      Int    @id @default(autoincrement())
+  uni_id  String
+  uni_name String
+  rating  Float
+  name    String
+  age     Int
+  sex     String
+  replies post[] @relation("replies")
+}
+
+// The post model has the following fields:
+// - id: a unique identifier for each post
+// - patient_id: the ID of the patient who created the post
+// - student_ids: a list of IDs of the medical students who replied to the post
+// - text_content: the text content of the post
+// - patient: a relation field that connects the post to the patient who created it
+// - students: a relation field that connects the post to the medical students who replied to it
+model post {
+  id           Int          @id @default(autoincrement())
+  patient_id   Int
+  student_ids  Int[]
+  text_content String
+  patient      patient      @relation(fields: [patient_id], references: [id])
+  students     med_student[] @relation("replies", fields: [student_ids], references: [id])
+}
