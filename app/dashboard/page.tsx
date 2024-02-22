@@ -2,6 +2,7 @@ import { auth, clerkClient } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import { OrgDetails, SessionDetails, UserDetails } from "./details";
 import Link from "next/link";
+import { useState } from "react";
 
 export default async function DashboardPage() {
   const { userId } = auth();
@@ -31,7 +32,7 @@ export default async function DashboardPage() {
                 </div>
               )}
               <div className="text-3xl">
-              <div>Name: {user.firstName} {user.lastName}</div>
+              <div>{user.firstName} {user.lastName}</div>
               <div>{user.emailAddresses.map((email) => (
                     <div key={email.id} className="flex gap-2 mb-1">
                       {email.emailAddress}

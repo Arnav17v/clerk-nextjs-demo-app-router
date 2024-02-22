@@ -67,7 +67,7 @@ export default function RootLayout({
                   }}
                 />
               </div>
-              <Link href="./home" className="flex items-center h-20 gap-2 sm:gap-4"><button>Home</button></Link>
+              <Link href="/home" className="flex items-center h-20 gap-2 sm:gap-4"><button>Home</button></Link>
               <UserButton afterSignOutUrl="/" />
             </SignedIn>
           </header>
